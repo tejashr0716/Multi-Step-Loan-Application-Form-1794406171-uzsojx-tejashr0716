@@ -1,0 +1,121 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+
+\definecolor{primary}{RGB}{31, 78, 121}
+\definecolor{secondary}{RGB}{79, 70, 229}
+\definecolor{codebg}{RGB}{245, 247, 250}
+\definecolor{codeframe}{RGB}{220, 225, 230}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primary,
+    urlcolor=secondary
+}
+
+\titleformat{\section}{\large\bfseries\color{primary}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{secondary}}{}{0em}{}
+
+\lstset{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=2
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{\color{primary}ZeTheta Algorithms Private Limited}}\\[4pt]
+    {\large \textbf{Full Stack Engineer Assessment — Final Project Submission}}\\[2pt]
+    \textbf{Project 1 A: Front End Developer Multi Step Loan Application Form (Course ID: 137617)}\\[3pt]
+    \textbf{Candidate:} Tejas H R \quad $|$ \quad \textbf{Submission Date:} November 2026 \quad $|$ \quad \textbf{Status:} 100\% Verified \& Passing
+\end{center}
+
+\vspace{6pt}
+
+\section{1. Executive Summary \& Project Compliance Matrix}
+This submission provides the complete, production-grade implementation of the \textbf{Multi-Step Loan Application Portal} built to enterprise fintech standards. The application features an 8-step modular state machine, real-time KYC telemetry verification, reactive conditional rendering for three distinct loan categories (Personal, Home, Business), client-side document compression, HTML5 canvas digital e-signature capture, and a real-time financial underwriting engine.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\begin{tabular}{@{}llp{8cm}@{}}
+\toprule
+\textbf{Deliverable Part} & \textbf{Status} & \textbf{Technical Implementation} \\ \midrule
+\textbf{Part 1: 8+ Step Form Architecture} & \textbf{Completed} & State machine with forward/backward history and progress tracking \\
+\textbf{Part 2: Conditional Field Rendering} & \textbf{Completed} & Reactive isolation for Personal, Home, and Business parameters \\
+\textbf{Part 3: Real-Time PAN \& Aadhaar KYC} & \textbf{Completed} & NSDL format validation + simulated asynchronous UIDAI verification \\
+\textbf{Part 4: Document Upload \& E-Signature} & \textbf{Completed} & Client compression ($<$500KB) + HTML5 canvas stroke e-signature \\
+\textbf{Part 5: Auto-Save with Resume} & \textbf{Completed} & LocalStorage persistence with automatic draft restoration \\
+\textbf{Part 6: Pre-Approval Eligibility Engine} & \textbf{Completed} & Automated calculation of FOIR ratio, CIBIL tiers, and monthly EMI \\
+\textbf{Part 7: Comprehensive E2E Test Suite} & \textbf{Completed} & Playwright automated test suite (\texttt{e2e\_test.py}) — \textbf{100\% pass rate} \\
+\textbf{Final Part: Production Delivery} & \textbf{Completed} & Full source package, test suite, and architectural documentation \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{2. Architecture \& State Management}
+The application is structured around a central state engine:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+    \item \textbf{Single Source of Truth:} Global \texttt{state} object tracking all 8 steps, applicant demographics, verified KYC tokens, and financial telemetry.
+    \item \textbf{Persistence Layer:} Automatic synchronization to browser \texttt{localStorage} on every keystroke, allowing users to seamlessly refresh or resume their application without losing progress.
+    \item \textbf{Navigation Control:} Stepper pills and forward/backward buttons with strict step-level schema validation.
+\end{itemize}
+
+\section{3. Underwriting \& Loan Eligibility Mathematics}
+The pre-approval engine computes the monthly Equated Monthly Installment (EMI) using the standard actuarial formula:
+\[
+\text{EMI} = \frac{P \times r \times (1 + r)^n}{(1 + r)^n - 1}
+\]
+where $P$ is the principal loan amount, $r$ is the monthly interest rate ($\text{Annual Rate} / 12 / 100$), and $n$ is the loan tenure in months.
+
+The \textbf{Fixed Obligation to Income Ratio (FOIR)} evaluates candidate capacity:
+\[
+\text{FOIR} = \left(\frac{\text{Existing EMIs} + \text{Proposed EMI}}{\text{Net Monthly Income}}\right) \times 100
+\]
+Applications with $\text{FOIR} \le 50\%$ and $\text{CIBIL} \ge 750$ qualify for immediate Tier-1 pre-approval offers.
+
+\section{4. Automated E2E Verification Results}
+The automated Playwright test suite (\texttt{e2e\_test.py}) was executed in headless mode with zero errors:
+\begin{lstlisting}
+============================================================
+Starting E2E Test Suite for ZeTheta Multi-Step Loan Application
+============================================================
+[PASS] Test 1: Initial portal layout and Step 1 loaded correctly.
+[PASS] Test 2: Step 1 validated and advanced to Step 2.
+[PASS] Test 3: Form validation blocks progression on empty fields.
+[PASS] Test 4: Step 2 demographics submitted successfully.
+[PASS] Test 5: Real-time PAN (NSDL) & Aadhaar (UIDAI) verification verified.
+[PASS] Test 6: Postal PIN code autocomplete populated City and State.
+[PASS] Test 7: Financial income profile validated.
+[PASS] Test 8: Conditional field rendering correctly isolated Personal Loan parameters.
+[PASS] Test 9: Document upload compression preview & digital signature canvas verified.
+[PASS] Test 10: Underwriting engine calculated sanction Rs. 8,00,000 with monthly EMI.
+============================================================
+ALL 10 E2E AUTOMATED TESTS PASSED SUCCESSFULLY! (100% Pass Rate)
+============================================================
+\end{lstlisting}
+
+\section{5. Full Production Source Code Repository}
+The complete codebase is bundled in the submission package:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+    \item \texttt{index.html}: Responsive 8-step semantic markup with Tailwind CSS styling.
+    \item \texttt{app.js}: Modular state machine, KYC validators, canvas signature engine, and underwriting algorithms.
+    \item \texttt{styles.css}: Enterprise styling, responsive layouts, and step transition animations.
+    \item \texttt{e2e\_test.py}: End-to-end automated testing script.
+\end{itemize}
+
+\end{document}

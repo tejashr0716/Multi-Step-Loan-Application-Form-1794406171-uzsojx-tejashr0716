@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeTheta FastTrack — Multi-Step Loan Application Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+          ζ
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900 leading-tight">ZeTheta Financial</h1>
+          <p class="text-xs text-slate-500 font-medium">Digital Lending & Risk Engineering Platform</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span id="save-indicator" class="hidden text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium border border-emerald-200 flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Draft auto-saved
+        </span>
+        <button id="reset-btn" class="text-xs text-slate-500 hover:text-rose-600 transition font-medium px-2 py-1">Reset Form</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Container -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+    
+    <!-- Progress Indicator -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs mb-8">
+      <div class="flex justify-between items-center mb-3">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">Application Progress</span>
+          <h2 id="step-title-heading" class="text-base font-bold text-slate-900">Step 1: Select Loan Type</h2>
+        </div>
+        <span id="step-fraction" class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">Step 1 of 8</span>
+      </div>
+      <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+        <div id="progress-bar" class="bg-gradient-to-r from-indigo-600 to-violet-500 h-full rounded-full transition-all duration-300 ease-out" style="width: 12.5%;"></div>
+      </div>
+      
+      <!-- Stepper Icons / Navigation Bar -->
+      <div class="grid grid-cols-8 gap-1 mt-4 pt-3 border-t border-slate-100 text-center">
+        <button class="step-pill active" data-step="1">1. Type</button>
+        <button class="step-pill" data-step="2">2. Profile</button>
+        <button class="step-pill" data-step="3">3. KYC</button>
+        <button class="step-pill" data-step="4">4. Address</button>
+        <button class="step-pill" data-step="5">5. Income</button>
+        <button class="step-pill" data-step="6">6. Details</button>
+        <button class="step-pill" data-step="7">7. Docs</button>
+        <button class="step-pill" data-step="8">8. Decision</button>
+      </div>
+    </div>
+
+    <!-- Multi-Step Form Wrapper -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <form id="loan-form" novalidate>
+
+        <!-- STEP 1: Loan Type & Requested Amount -->
+        <section class="step-pane active p-6 sm:p-8" data-step="1">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">Choose Your Financing Category</h3>
+            <p class="text-sm text-slate-500 mt-1">Select the borrowing purpose to tailor your interest rates and required documents.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <label class="loan-card cursor-pointer border-2 border-slate-200 rounded-xl p-5 hover:border-indigo-400 transition flex flex-col justify-between">
+              <input type="radio" name="loanType" value="PERSONAL" class="sr-only" required checked>
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-3">💼</div>
+                <h4 class="font-bold text-slate-900 text-base">Personal Loan</h4>
+                <p class="text-xs text-slate-500 mt-1">Unsecured credit for medical, travel, or personal expenses. Fast 24h approval.</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between text-xs font-semibold text-slate-600">
+                <span>Rate from 10.5%</span>
+                <span>Max ₹25L</span>
+              </div>
+            </label>
+
+            <label class="loan-card cursor-pointer border-2 border-slate-200 rounded-xl p-5 hover:border-indigo-400 transition flex flex-col justify-between">
+              <input type="radio" name="loanType" value="HOME" class="sr-only">
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg mb-3">🏡</div>
+                <h4 class="font-bold text-slate-900 text-base">Home Loan</h4>
+                <p class="text-xs text-slate-500 mt-1">Purchase new property, construction, or home renovation with low interest.</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between text-xs font-semibold text-slate-600">
+                <span>Rate from 8.35%</span>
+                <span>Max ₹5Cr</span>
+              </div>
+            </label>
+
+            <label class="loan-card cursor-pointer border-2 border-slate-200 rounded-xl p-5 hover:border-indigo-400 transition flex flex-col justify-between">
+              <input type="radio" name="loanType" value="BUSINESS" class="sr-only">
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg mb-3">🏢</div>
+                <h4 class="font-bold text-slate-900 text-base">Business Loan</h4>
+                <p class="text-xs text-slate-500 mt-1">Working capital, machinery, expansion credit for MSMEs and private entities.</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between text-xs font-semibold text-slate-600">
+                <span>Rate from 12.0%</span>
+                <span>Max ₹2Cr</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Required Loan Amount (₹)</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 font-semibold">₹</span>
+                <input type="number" id="loanAmount" name="loanAmount" min="50000" max="50000000" step="10000" value="750000" class="input-field pl-8" required>
+              </div>
+              <span class="error-msg" id="err-loanAmount"></span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Requested Tenor (Months)</label>
+              <select id="loanTenure" name="loanTenure" class="input-field" required>
+                <option value="12">12 Months (1 Year)</option>
+                <option value="24">24 Months (2 Years)</option>
+                <option value="36" selected>36 Months (3 Years)</option>
+                <option value="48">48 Months (4 Years)</option>
+                <option value="60">60 Months (5 Years)</option>
+                <option value="120">120 Months (10 Years - Home Only)</option>
+                <option value="240">240 Months (20 Years - Home Only)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 2: Primary Applicant Profile -->
+        <section class="step-pane p-6 sm:p-8" data-step="2">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">Personal & Demographic Details</h3>
+            <p class="text-sm text-slate-500 mt-1">Please provide legal details exactly matching your official government identity records.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Full Legal Name</label>
+              <input type="text" name="fullName" id="fullName" placeholder="e.g. Tejas H R" class="input-field" required>
+              <span class="error-msg" id="err-fullName"></span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Date of Birth</label>
+              <input type="date" name="dob" id="dob" class="input-field" max="2006-01-01" required>
+              <span class="error-msg" id="err-dob"></span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Gender</label>
+              <select name="gender" id="gender" class="input-field" required>
+                <option value="">Select Gender</option>
+                <option value="MALE" selected>Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other / Non-binary</option>
+              </select>
+              <span class="error-msg" id="err-gender"></span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Marital Status</label>
+              <select name="maritalStatus" id="maritalStatus" class="input-field" required>
+                <option value="SINGLE" selected>Single</option>
+                <option value="MARRIED">Married</option>
+                <option value="DIVORCED">Divorced / Widowed</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Mobile Phone Number</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-semibold text-xs">+91</span>
+                <input type="tel" name="phone" id="phone" placeholder="9876543210" maxlength="10" class="input-field pl-12" required>
+              </div>
+              <span class="error-msg" id="err-phone"></span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Email Address</label>
+              <input type="email" name="email" id="email" placeholder="applicant@example.com" class="input-field" required>
+              <span class="error-msg" id="err-email"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 3: Real-Time KYC & Government ID Verification -->
+        <section class="step-pane p-6 sm:p-8" data-step="3">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">National ID & KYC Verification</h3>
+            <p class="text-sm text-slate-500 mt-1">Instant real-time verification against NSDL (PAN) and UIDAI (Aadhaar) databases.</p>
+          </div>
+
+          <div class="space-y-6">
+            <!-- PAN Card -->
+            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-800">Permanent Account Number (PAN)</label>
+                <span id="pan-badge" class="badge-neutral">Unverified</span>
+              </div>
+              <div class="flex gap-3">
+                <input type="text" name="panNumber" id="panNumber" maxlength="10" placeholder="ABCDE1234F" class="input-field uppercase font-mono tracking-wider" required>
+                <button type="button" id="verify-pan-btn" class="btn-secondary whitespace-nowrap">Verify PAN</button>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Format: 5 letters, 4 digits, 1 letter (e.g. ABCDE1234F)</p>
+              <span class="error-msg" id="err-panNumber"></span>
+            </div>
+
+            <!-- Aadhaar Card -->
+            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-800">Aadhaar Virtual ID / Number (12 Digits)</label>
+                <span id="aadhaar-badge" class="badge-neutral">Unverified</span>
+              </div>
+              <div class="flex gap-3">
+                <input type="text" name="aadhaarNumber" id="aadhaarNumber" maxlength="14" placeholder="5489 1234 5678" class="input-field font-mono tracking-wider" required>
+                <button type="button" id="verify-aadhaar-btn" class="btn-secondary whitespace-nowrap">Verify Aadhaar</button>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Secured via 256-bit hash tokenization. Verified via Luhn algorithm simulation.</p>
+              <span class="error-msg" id="err-aadhaarNumber"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 4: Address Details with Smart Autocomplete -->
+        <section class="step-pane p-6 sm:p-8" data-step="4">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">Current Residential Address</h3>
+            <p class="text-sm text-slate-500 mt-1">Smart postal PIN autocomplete automatically fills city and state.</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Street Address / Apartment / Flat No.</label>
+              <input type="text" name="streetAddress" id="streetAddress" placeholder="Flat 402, Green Glen Layout, Bellandur" class="input-field" required>
+              <span class="error-msg" id="err-streetAddress"></span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Postal PIN Code</label>
+                <input type="text" name="pincode" id="pincode" placeholder="560103" maxlength="6" class="input-field font-mono" required>
+                <span class="error-msg" id="err-pincode"></span>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">City / District</label>
+                <input type="text" name="city" id="city" placeholder="Bengaluru" class="input-field bg-slate-50" required>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">State</label>
+                <input type="text" name="state" id="state" placeholder="Karnataka" class="input-field bg-slate-50" required>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Residence Ownership</label>
+              <div class="grid grid-cols-3 gap-3">
+                <label class="border border-slate-200 rounded-lg p-3 text-center cursor-pointer hover:bg-slate-50 text-xs font-semibold">
+                  <input type="radio" name="residenceType" value="OWNED" class="mr-1" checked> Owned
+                </label>
+                <label class="border border-slate-200 rounded-lg p-3 text-center cursor-pointer hover:bg-slate-50 text-xs font-semibold">
+                  <input type="radio" name="residenceType" value="RENTED" class="mr-1"> Rented
+                </label>
+                <label class="border border-slate-200 rounded-lg p-3 text-center cursor-pointer hover:bg-slate-50 text-xs font-semibold">
+                  <input type="radio" name="residenceType" value="PARENTAL" class="mr-1"> Parental
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 5: Employment & Financial Income (Conditional on Loan Type) -->
+        <section class="step-pane p-6 sm:p-8" data-step="5">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">Employment & Income Profile</h3>
+            <p class="text-sm text-slate-500 mt-1">Determines debt-to-income (FOIR) ratios and repayment capacity.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Employment Category</label>
+              <select name="employmentType" id="employmentType" class="input-field" required>
+                <option value="SALARIED" selected>Salaried (Private / Govt / MNC)</option>
+                <option value="SELF_EMPLOYED">Self-Employed Professional (Doctor, CA, etc.)</option>
+                <option value="BUSINESS_OWNER">Business Owner / Proprietorship</option>
+              </select>
+            </div>
+
+            <div id="company-name-wrap">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Employer / Enterprise Name</label>
+              <input type="text" name="companyName" id="companyName" placeholder="e.g. Cisco Systems India" class="input-field" required>
+              <span class="error-msg" id="err-companyName"></span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Net Monthly In-Hand Income (₹)</label>
+              <input type="number" name="monthlyIncome" id="monthlyIncome" placeholder="95000" min="15000" class="input-field" required>
+              <span class="error-msg" id="err-monthlyIncome"></span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Existing Monthly Loan EMIs (₹)</label>
+              <input type="number" name="existingEmi" id="existingEmi" placeholder="0" min="0" value="0" class="input-field" required>
+              <span class="error-msg" id="err-existingEmi"></span>
+            </div>
+          </div>
+
+          <!-- Dynamic Business Segment -->
+          <div id="business-income-wrap" class="hidden mt-5 p-4 bg-amber-50 rounded-xl border border-amber-200">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900 mb-3">Enterprise Financial Audit</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-amber-800 mb-1">Annual Turnover (₹)</label>
+                <input type="number" name="annualTurnover" id="annualTurnover" placeholder="5000000" class="input-field bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-amber-800 mb-1">GSTIN Number</label>
+                <input type="text" name="gstin" id="gstin" placeholder="29ABCDE1234F1Z5" class="input-field bg-white uppercase font-mono">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 6: Conditional Loan Specific Details (Collateral / Property / Business) -->
+        <section class="step-pane p-6 sm:p-8" data-step="6">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900" id="step6-heading">Loan Specific Parameters</h3>
+            <p class="text-sm text-slate-500 mt-1" id="step6-desc">Collateral assessment and specific property/business validation.</p>
+          </div>
+
+          <!-- Personal Loan Specific Fields -->
+          <div id="fields-personal" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Primary Purpose of Personal Loan</label>
+              <select name="personalPurpose" id="personalPurpose" class="input-field">
+                <option value="DEBT_CONSOLIDATION">Debt Consolidation</option>
+                <option value="HOME_IMPROVEMENT" selected>Home Interior & Improvement</option>
+                <option value="MEDICAL">Medical Emergency</option>
+                <option value="EDUCATION">Higher Education & Certifications</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Home Loan Specific Fields -->
+          <div id="fields-home" class="hidden space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Estimated Property Value (₹)</label>
+                <input type="number" name="propertyValue" id="propertyValue" placeholder="12000000" class="input-field">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Property Stage</label>
+                <select name="propertyStage" id="propertyStage" class="input-field">
+                  <option value="READY_TO_MOVE">Ready to Move</option>
+                  <option value="UNDER_CONSTRUCTION">Under Construction</option>
+                  <option value="PLOT_CONSTRUCTION">Plot Purchase & Construction</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">RERA Registration / Project Name</label>
+              <input type="text" name="reraNumber" id="reraNumber" placeholder="PRM/KA/RERA/1251/..." class="input-field">
+            </div>
+          </div>
+
+          <!-- Business Loan Specific Fields -->
+          <div id="fields-business" class="hidden space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Years of Business Operation</label>
+                <input type="number" name="businessVintage" id="businessVintage" placeholder="4" min="1" class="input-field">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">Industry Sector</label>
+                <select name="businessSector" id="businessSector" class="input-field">
+                  <option value="IT_SERVICES">IT & Software Services</option>
+                  <option value="MANUFACTURING">Manufacturing / Precision Engg</option>
+                  <option value="RETAIL">Retail & eCommerce</option>
+                  <option value="HEALTHCARE">Healthcare & Pharma</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 7: Document Upload & E-Signature Pad -->
+        <section class="step-pane p-6 sm:p-8" data-step="7">
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">Document Upload & E-Signature</h3>
+            <p class="text-sm text-slate-500 mt-1">Client-side compressed document pipeline and digital e-signature authorization.</p>
+          </div>
+
+          <!-- Document Upload Box with Client Compression Simulation -->
+          <div class="mb-6">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">Upload Salary Slip / ITR / Bank Statement (PDF or Image)</label>
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-indigo-400 bg-slate-50/50 transition cursor-pointer">
+              <input type="file" id="docUpload" name="docUpload" accept=".pdf,.png,.jpg,.jpeg" class="sr-only">
+              <div class="flex flex-col items-center">
+                <svg class="w-10 h-10 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <p class="text-sm font-semibold text-slate-700">Click to upload or drag & drop</p>
+                <p class="text-xs text-slate-400 mt-1">Automatic client-side compression below 500KB</p>
+              </div>
+            </div>
+            <div id="file-preview-card" class="hidden mt-3 p-3 bg-white border border-slate-200 rounded-lg flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs">DOC</div>
+                <div>
+                  <p id="preview-filename" class="text-xs font-bold text-slate-800">payslip_oct2026.pdf</p>
+                  <p id="preview-filesize" class="text-xs text-slate-400">184 KB (Compressed)</p>
+                </div>
+              </div>
+              <button type="button" id="remove-file-btn" class="text-xs text-rose-500 font-semibold hover:underline">Remove</button>
+            </div>
+            <span class="error-msg" id="err-docUpload"></span>
+          </div>
+
+          <!-- HTML5 E-Signature Pad -->
+          <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-xs font-bold uppercase tracking-wider text-slate-800">Digital E-Signature Authorization</label>
+              <button type="button" id="clear-sig-btn" class="text-xs text-slate-500 hover:text-rose-600 font-medium">Clear Canvas</button>
+            </div>
+            <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-inner">
+              <canvas id="sig-canvas" width="600" height="150" class="w-full h-36 cursor-crosshair touch-none"></canvas>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">By signing above, you authorize ZeTheta Financial to pull credit bureau telemetry (CIBIL/Experian) and generate loan terms.</p>
+            <input type="hidden" name="signatureData" id="signatureData">
+            <span class="error-msg" id="err-signatureData"></span>
+          </div>
+        </section>
+
+        <!-- STEP 8: Pre-Approval Summary & Eligibility Engine -->
+        <section class="step-pane p-6 sm:p-8" data-step="8">
+          <div class="mb-6">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider">Evaluation Complete</span>
+            <h3 class="text-2xl font-black text-slate-900 mt-2">Instant Pre-Approval Offer</h3>
+            <p class="text-sm text-slate-500">Based on your FOIR ratio, credit telemetry, and financial verification score.</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-2xl p-6 mb-6 shadow-lg">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-indigo-800/60 pb-5">
+              <div>
+                <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">Approved Credit Line</span>
+                <p id="approved-amount" class="text-3xl sm:text-4xl font-extrabold text-white mt-1">₹7,50,000</p>
+              </div>
+              <div class="text-right">
+                <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">Estimated Monthly EMI</span>
+                <p id="approved-emi" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1">₹24,380<span class="text-xs font-normal text-slate-300">/mo</span></p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-5 text-xs">
+              <div>
+                <p class="text-indigo-300 font-medium">Interest Rate (p.a.)</p>
+                <p id="approved-rate" class="text-base font-bold text-white mt-0.5">10.50%</p>
+              </div>
+              <div>
+                <p class="text-indigo-300 font-medium">Tenor Duration</p>
+                <p id="approved-tenure" class="text-base font-bold text-white mt-0.5">36 Months</p>
+              </div>
+              <div>
+                <p class="text-indigo-300 font-medium">CIBIL Telemetry</p>
+                <p id="approved-cibil" class="text-base font-bold text-emerald-400 mt-0.5">782 (Tier 1)</p>
+              </div>
+              <div>
+                <p class="text-indigo-300 font-medium">FOIR Capacity</p>
+                <p id="approved-foir" class="text-base font-bold text-white mt-0.5">34.2%</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 mb-6">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">Applicant Audit Trail</h4>
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs">
+              <div class="flex justify-between py-1 border-b border-slate-100">
+                <dt class="text-slate-500">Applicant Name:</dt>
+                <dd id="sum-name" class="font-semibold text-slate-800">Tejas H R</dd>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-100">
+                <dt class="text-slate-500">PAN ID:</dt>
+                <dd id="sum-pan" class="font-mono font-semibold text-slate-800">ABCDE1234F (Verified)</dd>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-100">
+                <dt class="text-slate-500">Loan Category:</dt>
+                <dd id="sum-type" class="font-semibold text-slate-800">Personal Loan</dd>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-100">
+                <dt class="text-slate-500">Processing Fee:</dt>
+                <dd class="font-semibold text-emerald-600">₹0 (Zero Processing Fee Promo)</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold">✓</div>
+            <p class="text-xs text-emerald-900 font-medium">Application verified against ZeTheta Underwriting Rules. Instant sanction letter generated.</p>
+          </div>
+        </section>
+
+        <!-- Form Action Navigation Footer -->
+        <div class="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+          <button type="button" id="prev-btn" class="btn-ghost hidden">
+            ← Previous Step
+          </button>
+          <div class="flex items-center space-x-3 ml-auto">
+            <button type="button" id="next-btn" class="btn-primary">
+              Continue to Step 2 →
+            </button>
+            <button type="button" id="submit-btn" class="btn-primary hidden bg-emerald-600 hover:bg-emerald-700">
+              Submit & Download Sanction Letter 🚀
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    <div class="max-w-5xl mx-auto px-4">
+      <p class="font-semibold text-slate-600">ZeTheta Algorithms Private Limited — Full Stack Engineer Assessment</p>
+      <p class="mt-1">Project 1 A: Front End Developer Multi Step Loan Application Form</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
