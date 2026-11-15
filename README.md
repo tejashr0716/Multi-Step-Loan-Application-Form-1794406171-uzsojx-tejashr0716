@@ -1,5 +1,8 @@
-# ZeTheta FastTrack — Multi-Step Loan Application Portal
-## Full Stack Engineer Assessment — Project 1 A (Course ID: 137617)
+# Online Loan Application Portal
+> 8-step dynamic loan application wizard with real-time identity verification, digital canvas signature, and instant loan pre-approval calculations.
+> Live Demo: [https://tejashr0716.github.io/loan-portal/](https://tejashr0716.github.io/loan-portal/)
+
+## Full Stack Engineer Project Showcase
 
 ### Deliverables Compliance Matrix
 
