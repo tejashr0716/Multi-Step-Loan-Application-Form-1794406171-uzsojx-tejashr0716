@@ -524,6 +524,7 @@
   function goToStep(step) {
     currentStep = step;
     renderStep(currentStep);
+    persistDraft();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
